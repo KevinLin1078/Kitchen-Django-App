@@ -27,8 +27,9 @@ then
    sudo ufw allow '80'
    sudo apt-get install curl
    curl -4 icanhazip.com
-   file=/etc/apache2/sites-enabled/000-default.conf
-   if [ -e $file ]
+   file1=/etc/apache2/sites-enabled/000-default.conf
+   file2=/etc/apache2/sites-enabled/apache.conf
+   if [ -e $file1 ] || [ -e $file2 ]
    then 
       sudo rm /etc/apache2/sites-enabled/000-default.conf
    fi
