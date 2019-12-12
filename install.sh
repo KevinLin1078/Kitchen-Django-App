@@ -14,10 +14,10 @@ then
 
    sudo apt-get update
    sudo pip3 install virtualenv 
-   virtualenv ~/env
-   source ~/env/bin/activate
-   ~/env/bin/pip3 install -r install.txt
-   ~/env/bin/pip3 install django-paypal
+   virtualenv ~/kitchen/env
+   source ~/kitchen/env/bin/activate
+   ~/kitchen/env/bin/pip3 install -r install.txt
+   ~/kitchen/env/bin/pip3 install django-paypal
    sudo apt-get update
    
    sudo apt-get install apache2 libapache2-mod-wsgi-py3 -y
@@ -27,15 +27,12 @@ then
    sudo ufw allow '80'
    sudo apt-get install curl
    curl -4 icanhazip.com
-   file1=/etc/apache2/sites-enabled/000-default.conf
-   file2=/etc/apache2/sites-enabled/apache.conf
-   if [ -e $file1 ] || [ -e $file2 ]
+   file=/etc/apache2/sites-enabled/000-default.conf
+   if [ -e $file ]
    then 
       sudo rm /etc/apache2/sites-enabled/000-default.conf
    fi
    sudo cp ~/kitchen/apache.conf /etc/apache2/sites-enabled/
    sudo service apache2 restart
    
-
-
 fi
