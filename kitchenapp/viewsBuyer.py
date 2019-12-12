@@ -16,14 +16,16 @@ import boto3
 from .serializer import DishSerialize
 
 
-class AllKitchenView(View):
+class AllKitchenView(APIView):
    
    def get(self, request):
+      
       kitchens = Kitchen.objects.all()
       kitchen_session = KitchenSession(request)
       user = kitchen_session.is_login()
-      
       return render(request, 'buyer_kitchen.html', {'kitchens':kitchens, 'login': user[0], 'username':user[1], 'provider': kitchen_session.isProvider()  })
+      
+      
 
 class CartView(ListView):
    
@@ -65,7 +67,9 @@ class Purchase(APIView):
    @login_required
    def post(self, request):
       KitchenSession(request).processTransaction()
-      return Response({'status': "OK"})
+      response = Response({'status': "Purchased Successfully"})
+      response["Access-Control-Allow-Origin"] = "*"
+      return response
 
 
 class OrderView(View):
