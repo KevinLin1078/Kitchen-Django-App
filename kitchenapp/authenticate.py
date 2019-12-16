@@ -2,7 +2,7 @@
 from django.http import HttpResponse, HttpResponseRedirect
 from .models import User, Kitchen
 from django.urls import reverse
-
+from django.shortcuts import get_object_or_404
 import boto3
 
 
@@ -27,11 +27,13 @@ def seller_required(function):
 
 
 def authenticate_user(request, username, password):
-   userObj = User.objects.get(username=username, password=password)
-   if userObj:
+   userObj = None
+   try:
+      userObj = User.objects.get(username=username, password=password)
       request.session['user'] = (username, password, userObj.is_provider)
       return True
-   return False
+   except Exception:
+      return False
 
 def addToBucket(kitchen_name, file):
       filename = file.name

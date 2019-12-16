@@ -5,13 +5,14 @@ from .viewsAuth import Signup, Login, Logout
 from .viewsProvider import AddKitchen, ProviderKitchenView, AddDish
 from .viewsBuyer import AllKitchenView, MenuView, AddToCart, CartView, Purchase, OrderView, PurchasedOrder, RemoveDish
 
+from django.views.decorators.csrf import csrf_exempt
 app_name='kitchen'
 
 urlpatterns = [
     #User Authentication
     path('', AllKitchenView.as_view(), name='index'),
     url(r'^signup/$', Signup.as_view(), name='signup'),
-    url(r'^login/$', Login.as_view(), name='login'),
+    url(r'^login/$', csrf_exempt(Login.as_view()), name='login'),
     url(r'^logout/$', Logout.as_view(), name='logout'),
     
     # Provider Path   

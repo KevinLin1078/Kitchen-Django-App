@@ -18,6 +18,8 @@ then
    source ~/kitchen/env/bin/activate
    ~/kitchen/env/bin/pip3 install -r install.txt
    ~/kitchen/env/bin/pip3 install django-paypal
+   ~/kitchen/env/bin/pip3 install django-cors-headers
+   ~/kitchen/env/bin/pip3 install django-angular
    sudo apt-get update
    
    sudo apt-get install apache2 libapache2-mod-wsgi-py3 -y

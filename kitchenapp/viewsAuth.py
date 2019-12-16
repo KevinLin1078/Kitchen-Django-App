@@ -13,6 +13,8 @@ from .session import KitchenSession
 from .authenticate import login_required, authenticate_user, seller_required, addToBucket
 import boto3
 
+
+
 class Signup(View):
    def get(self, request):
       form = SignUpForm()
@@ -26,23 +28,23 @@ class Signup(View):
          
       return HttpResponseRedirect(reverse('kitchen:signup'))
 
+from .serializer import LoginSerializer
+from django.http import JsonResponse
 class Login(View):
 
    def get(self, request):
       form = LoginForm()
       return render(request, 'forms.html', {'form': form, 'name':'Login'})
-
+   
    def post(self, request):
-      form = LoginForm(request.POST)
-
-      if form.is_valid():
-         username = form.cleaned_data['username']
-         password = form.cleaned_data['password']
-         if authenticate_user(request, username, password):
-            return HttpResponseRedirect(reverse('kitchen:index'))
+      print(request.POST)
+      username = request.POST['username']
+      password = request.POST['password']
+               
+      if authenticate_user(request, username, password):
+         return JsonResponse({'status': "ok"})
          
-      return HttpResponseRedirect(reverse('kitchen:login'))
-
+      return JsonResponse({'status': "error"})
 class Logout(View):
    
    def get(self, request):
