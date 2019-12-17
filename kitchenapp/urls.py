@@ -12,7 +12,10 @@ urlpatterns = [
     #User Authentication
     path('', AllKitchenView.as_view(), name='index'),
     url(r'^signup/$', Signup.as_view(), name='signup'),
-    url(r'^login/$', csrf_exempt(Login.as_view()), name='login'),
+    url(r'^login/$', Login.as_view(), name='login'),
+    url(r'^/login/$', Login.as_view(), name='login'),
+    url(r'^login$', Login.as_view(), name='login'),
+
     url(r'^logout/$', Logout.as_view(), name='logout'),
     
     # Provider Path   

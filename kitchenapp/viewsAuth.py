@@ -12,7 +12,17 @@ from .forms import SignUpForm, LoginForm, AddDishForm, AddKitchenForm
 from .session import KitchenSession
 from .authenticate import login_required, authenticate_user, seller_required, addToBucket
 import boto3
+from django.http import JsonResponse
 
+def get_updated_JsonResponse(request, table):
+   kitchen_session = KitchenSession(request)
+   user = kitchen_session.is_login()
+   table['status'] = 'okRest'
+   table['login'] = user[0]
+   table['username'] = user[1]
+   table['provider'] = kitchen_session.isProvider()
+   response = JsonResponse(table) 
+   return response
 
 
 class Signup(View):
@@ -28,23 +38,24 @@ class Signup(View):
          
       return HttpResponseRedirect(reverse('kitchen:signup'))
 
-from .serializer import LoginSerializer
-from django.http import JsonResponse
-class Login(View):
+class Login(APIView):
 
    def get(self, request):
-      form = LoginForm()
-      return render(request, 'forms.html', {'form': form, 'name':'Login'})
+      print('Cookie is => ',request.COOKIES)
+      
+      return JsonResponse({"itty": 'bitty'})
    
    def post(self, request):
-      print(request.POST)
-      username = request.POST['username']
-      password = request.POST['password']
+      print(request.data)
+      username = request.data['username']
+      password = request.data['password']
                
       if authenticate_user(request, username, password):
-         return JsonResponse({'status': "ok"})
+         response = get_updated_JsonResponse(request, {})
+         response.set_cookie('username', username)
+         return response
          
-      return JsonResponse({'status': "error"})
+      return JsonResponse({'status': "errorRest"})
 class Logout(View):
    
    def get(self, request):
