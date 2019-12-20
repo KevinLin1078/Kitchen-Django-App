@@ -53,10 +53,9 @@ class Login(APIView):
       password = request.data['password']
                
       if authenticate_user(request, username, password):
-         print("Login: => ", request.session.get('user'))
-         print("COOKIE==> ", request.COOKIES)
+         
          response = get_updated_JsonResponse(request, {})
-         response.set_cookie('username', username)
+         response.set_cookie('user', username)
          response.set_cookie('password', password)
          return response
          

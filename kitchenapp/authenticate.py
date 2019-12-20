@@ -6,18 +6,6 @@ from django.shortcuts import get_object_or_404
 import boto3
 from django.http import JsonResponse
 
-def login_required(function):
-   def wrapper(*args, **kwargs):
-      print("In LOGIN_REUQIRED=>", args[1].COOKIES)
-      if args[1].session.get('user'):
-         session = args[1].session.get('user')
-         
-         return function(*args, **kwargs)
-      else:
-         
-         return JsonResponse({'status': 'Login Error @login_required'})
-   return wrapper
-
 
 def seller_required(function):
    def wrapper(*args, **kwargs):
@@ -31,13 +19,23 @@ def seller_required(function):
 
 def authenticate_user(request, username, password):
    userObj = None
-   print("In Authenticate Cookie =>", request.COOKIES)
    try:
       userObj = User.objects.get(username=username, password=password)
       request.session['user'] = (username, password, userObj.is_provider)
       return True
    except Exception:
       return False
+
+def login_required(function):
+   def wrapper(*args, **kwargs):
+      cookie = args[1].COOKIES
+      username , password= cookie.get('user') ,cookie.get('password')
+      if authenticate_user(args[1],  username, password ):
+         return function(*args, **kwargs)
+      else:
+         return JsonResponse({'status': 'error'})
+   return wrapper
+
 
 def addToBucket(kitchen_name, file):
       filename = file.name

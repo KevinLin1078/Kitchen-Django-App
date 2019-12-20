@@ -56,9 +56,9 @@ MIDDLEWARE = [
     
 ]
 
-CORS_ORIGIN_ALLOW_ALL = False
+CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
-CORS_ORIGIN_WHITELIST = ['http://18.222.73.77:3000']
+# CORS_ORIGIN_WHITELIST = ['http://18.222.73.77:3000', 'http://18.224.151.69:3000']
 CORS_ALLOW_HEADERS = [
     'accept',
     'accept-encoding',

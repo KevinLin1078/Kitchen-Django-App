@@ -52,8 +52,8 @@ class CartView(APIView):
       serialize = CartSerializer(cart, many=True)
       data={'status': 'ok', 'cart': serialize.data }
       response = get_response(request, data)
-      print('Here AT CART COOKIE: GET =>' , request.COOKIES.get('username'))
-      # response["Access-Control-Allow-Origin"] = "*"
+      print('Here AT CART COOKIE: GET =>' , request.COOKIES.get('user'))
+      
       return response
 
 class MenuView(View):
