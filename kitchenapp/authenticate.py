@@ -29,11 +29,12 @@ def authenticate_user(request, username, password):
 def login_required(function):
    def wrapper(*args, **kwargs):
       cookie = args[1].COOKIES
+      print("@LOGIN ", cookie)
       username , password= cookie.get('user') ,cookie.get('password')
       if authenticate_user(args[1],  username, password ):
          return function(*args, **kwargs)
       else:
-         return JsonResponse({'status': 'error'})
+         return JsonResponse({'status': 'error login'})
    return wrapper
 
 

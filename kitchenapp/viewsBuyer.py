@@ -41,7 +41,6 @@ class AllKitchenView(APIView):
       return response
    
 class CartView(APIView):
-   
    @login_required
    def get(self, request):
       print("CART IS => ",request.session.get('user'))
@@ -49,11 +48,11 @@ class CartView(APIView):
       # return render(request, 'cart.html', {'in_cart': True ,'name': 'Shopping Cart','cart':cart, 'login':user[0], 'username': user[1], 'provider': kitchen_session.isProvider() , 'total': kitchen_session.getShopingCartTotal(), 'cart_length': len(cart) })
       kitchen_session = KitchenSession(request)
       cart = Cart.objects.filter(user=KitchenSession(request).getUserObject(), purchased=False )
-      serialize = CartSerializer(cart, many=True)
-      data={'status': 'ok', 'cart': serialize.data }
+      data = { 'cart': [], 'in_cart': True, 'total': kitchen_session.getShopingCartTotal(), 'cart_length': len(cart) }
+      for item in cart:
+         data['cart'].append({ 'id': item.id, 'dish_name': item.dish.dish_name, 'price': item.dish.price, 'kitchen_name' : item.dish.kitchen.kitchen_name}  )
       response = get_response(request, data)
-      print('Here AT CART COOKIE: GET =>' , request.COOKIES.get('user'))
-      
+
       return response
 
 class MenuView(View):
@@ -109,12 +108,13 @@ class PurchasedOrder(View):
       return render(request, 'cart.html', {'in_cart':False, 'price' : order.price, 'order_id' : order_id, 'name':'Order #' , 'login': user[0], 'username':user[1],'provider': kitchen_session.isProvider(), 'purchased': True,'cart':cart })
 
 
-class RemoveDish(View):
+class RemoveDish(APIView):
    @login_required
-   def get(self, request, cart_id):
+   def post(self, request, cart_id):
+      print('REMOVING DISH..... => ', cart_id)
       user = KitchenSession(request).getUserObject()
       Cart.objects.get(user=user, id=cart_id).delete()
-      return HttpResponseRedirect(reverse('kitchen:shoppingCart'))
+      return JsonResponse({'status':'ok'})
 
 
 # def get_response(request, table):
