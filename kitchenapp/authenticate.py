@@ -8,11 +8,13 @@ from django.http import JsonResponse
 
 def login_required(function):
    def wrapper(*args, **kwargs):
+      print("In LOGIN_REUQIRED=>", args[1].COOKIES)
       if args[1].session.get('user'):
          session = args[1].session.get('user')
+         
          return function(*args, **kwargs)
       else:
-         print("LOGIN_REUQIRED=>", args[1].COOKIES)
+         
          return JsonResponse({'status': 'Login Error @login_required'})
    return wrapper
 
@@ -29,6 +31,7 @@ def seller_required(function):
 
 def authenticate_user(request, username, password):
    userObj = None
+   print("In Authenticate Cookie =>", request.COOKIES)
    try:
       userObj = User.objects.get(username=username, password=password)
       request.session['user'] = (username, password, userObj.is_provider)

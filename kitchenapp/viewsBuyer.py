@@ -34,7 +34,6 @@ class AllKitchenView(APIView):
       # user = kitchen_session.is_login()
       # return render(request, 'buyer_kitchen.html', {'kitchens':kitchens, 'login': user[0], 'username':user[1], 'provider': kitchen_session.isProvider()  })
       # return redirect('http://18.222.73.77:8000/')
-      print('Home COOKIE=>',request.COOKIES)
       kitchens = Kitchen.objects.all()
       serialize = KitchenSerializer(kitchens,  many=True)
       data = {'status': "ok" ,'kitchens': serialize.data }
@@ -52,8 +51,9 @@ class CartView(APIView):
       cart = Cart.objects.filter(user=KitchenSession(request).getUserObject(), purchased=False )
       serialize = CartSerializer(cart, many=True)
       data={'status': 'ok', 'cart': serialize.data }
-      repsonse = get_response(request, data)
-      response["Access-Control-Allow-Origin"] = "*"
+      response = get_response(request, data)
+      print('Here AT CART COOKIE: GET =>' , request.COOKIES.get('username'))
+      # response["Access-Control-Allow-Origin"] = "*"
       return response
 
 class MenuView(View):

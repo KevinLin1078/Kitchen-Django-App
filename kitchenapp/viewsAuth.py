@@ -22,6 +22,8 @@ def get_updated_JsonResponse(request, table):
    table['username'] = user[1]
    table['provider'] = kitchen_session.isProvider()
    response = JsonResponse(table) 
+   response["Access-Control-Allow-Headers"] = "Set-Cookie"
+   response['Access-Control-Expose-Headers'] = 'Set-Cookie'
    return response
 
 
@@ -55,8 +57,7 @@ class Login(APIView):
          print("COOKIE==> ", request.COOKIES)
          response = get_updated_JsonResponse(request, {})
          response.set_cookie('username', username)
-         response["Access-Control-Allow-Headers"] = "Set-Cookie"
-         response['Access-Control-Expose-Headers'] = 'Set-Cookie'
+         response.set_cookie('password', password)
          return response
          
       return JsonResponse({'status': "errorRest"})
