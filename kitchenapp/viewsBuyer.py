@@ -13,12 +13,13 @@ from .session import KitchenSession
 from .authenticate import login_required, authenticate_user, seller_required, addToBucket
 import boto3
 
-from .serializer import DishSerialize, KitchenSerializer
+from .serializer import DishSerialize, KitchenSerializer, CartSerializer
 from django.http import JsonResponse
 
 def get_response(request, table):
    kitchen_session = KitchenSession(request)
    user = kitchen_session.is_login()
+   table['status'] = 'ok'
    table['login'] = user[0]
    table['username'] = user[1]
    table['provider'] = kitchen_session.isProvider()
@@ -33,23 +34,27 @@ class AllKitchenView(APIView):
       # user = kitchen_session.is_login()
       # return render(request, 'buyer_kitchen.html', {'kitchens':kitchens, 'login': user[0], 'username':user[1], 'provider': kitchen_session.isProvider()  })
       # return redirect('http://18.222.73.77:8000/')
-      
+      print('Home COOKIE=>',request.COOKIES)
       kitchens = Kitchen.objects.all()
       serialize = KitchenSerializer(kitchens,  many=True)
-      data = {'status': "OK" ,'kitchens': serialize.data }
+      data = {'status': "ok" ,'kitchens': serialize.data }
       response = get_response(request, data)
       return response
    
-class CartView(ListView):
+class CartView(APIView):
    
    @login_required
    def get(self, request):
+      print("CART IS => ",request.session.get('user'))
+      # user = kitchen_session.is_login()
+      # return render(request, 'cart.html', {'in_cart': True ,'name': 'Shopping Cart','cart':cart, 'login':user[0], 'username': user[1], 'provider': kitchen_session.isProvider() , 'total': kitchen_session.getShopingCartTotal(), 'cart_length': len(cart) })
       kitchen_session = KitchenSession(request)
       cart = Cart.objects.filter(user=KitchenSession(request).getUserObject(), purchased=False )
-      user = kitchen_session.is_login()
-      return render(request, 'cart.html', {'in_cart': True ,'name': 'Shopping Cart','cart':cart, 'login':user[0], 'username': user[1], 'provider': kitchen_session.isProvider() , 'total': kitchen_session.getShopingCartTotal(), 'cart_length': len(cart) })
-      
-
+      serialize = CartSerializer(cart, many=True)
+      data={'status': 'ok', 'cart': serialize.data }
+      repsonse = get_response(request, data)
+      response["Access-Control-Allow-Origin"] = "*"
+      return response
 
 class MenuView(View):
 

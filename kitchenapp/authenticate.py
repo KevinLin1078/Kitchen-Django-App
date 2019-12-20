@@ -4,7 +4,7 @@ from .models import User, Kitchen
 from django.urls import reverse
 from django.shortcuts import get_object_or_404
 import boto3
-
+from django.http import JsonResponse
 
 def login_required(function):
    def wrapper(*args, **kwargs):
@@ -12,7 +12,8 @@ def login_required(function):
          session = args[1].session.get('user')
          return function(*args, **kwargs)
       else:
-         return HttpResponseRedirect(reverse('kitchen:login'))
+         print("LOGIN_REUQIRED=>", args[1].COOKIES)
+         return JsonResponse({'status': 'Login Error @login_required'})
    return wrapper
 
 

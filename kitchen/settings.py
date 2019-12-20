@@ -45,17 +45,33 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
 
+    'corsheaders.middleware.CorsMiddleware',
+
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 
-    'corsheaders.middleware.CorsMiddleware',
+    
 ]
 
-CORS_ORIGIN_ALLOW_ALL = True
+CORS_ORIGIN_ALLOW_ALL = False
 CORS_ALLOW_CREDENTIALS = True
+CORS_ORIGIN_WHITELIST = ['http://18.222.73.77:3000']
+CORS_ALLOW_HEADERS = [
+    'accept',
+    'accept-encoding',
+    'authorization',
+    'content-type',
+    'dnt',
+    'origin',
+    'user-agent',
+    'x-csrftoken',
+    'x-requested-with',
+    'set-cookie'
+]
+
 
 
 ROOT_URLCONF = 'kitchen.urls'
@@ -93,10 +109,13 @@ WSGI_APPLICATION = 'kitchen.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'kitchenTable',
-        'USER': 'root',
-        'PASSWORD': 'rootroot',
-        'HOST': 'database-1.c3jxk3dtpywx.us-east-2.rds.amazonaws.com',
+        'NAME': 'xiangyiliu',
+        # 'USER': 'root',
+        # 'PASSWORD': 'rootroot',
+        # 'HOST': 'database-1.c3jxk3dtpywx.us-east-2.rds.amazonaws.com',
+        'USER': 'xiangyiliu',
+        'PASSWORD' : '111308288',
+        'HOST': 'mysql3.cs.stonybrook.edu',
         'PORT': '3306',
     }
 }

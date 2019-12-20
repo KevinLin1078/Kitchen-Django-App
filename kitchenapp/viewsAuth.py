@@ -17,7 +17,7 @@ from django.http import JsonResponse
 def get_updated_JsonResponse(request, table):
    kitchen_session = KitchenSession(request)
    user = kitchen_session.is_login()
-   table['status'] = 'okRest'
+   table['status'] = 'ok'
    table['login'] = user[0]
    table['username'] = user[1]
    table['provider'] = kitchen_session.isProvider()
@@ -51,17 +51,22 @@ class Login(APIView):
       password = request.data['password']
                
       if authenticate_user(request, username, password):
+         print("Login: => ", request.session.get('user'))
+         print("COOKIE==> ", request.COOKIES)
          response = get_updated_JsonResponse(request, {})
          response.set_cookie('username', username)
+         response["Access-Control-Allow-Headers"] = "Set-Cookie"
+         response['Access-Control-Expose-Headers'] = 'Set-Cookie'
          return response
          
       return JsonResponse({'status': "errorRest"})
-class Logout(View):
+
+class Logout(APIView):
    
-   def get(self, request):
+   def post(self, request):
       kitchen_session = KitchenSession(request)
       kitchen_session.removeAll()   
-      return HttpResponseRedirect(reverse('kitchen:index')) 
+      return JsonResponse({'status': 'ok'}) 
 
 
 
