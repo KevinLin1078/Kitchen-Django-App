@@ -87,14 +87,16 @@ class Purchase(APIView):
       return JsonResponse({'status': "ok"})
 
 
-class OrderView(View):
+class OrderView(APIView):
    def get(self, request):
       kitchen_session = KitchenSession(request)
       orders = Order.objects.filter(user=kitchen_session.getUserObject())
-      user = kitchen_session.is_login()
+      data = {'orders': [], 'name': "Orders"}
+      for order in orders:
+         data['orders'].append({'id': order.id, 'price':order.price})
+      response = get_response(request, data)
 
-      return render(request, 'order.html', {'name':'Order' , 'login': user[0], 'username':user[1],'provider': kitchen_session.isProvider(),'orders': orders })
-
+      return response
 
 class PurchasedOrder(View):
    @login_required
