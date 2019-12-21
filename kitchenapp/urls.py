@@ -19,19 +19,19 @@ urlpatterns = [
     url(r'^logout/$', Logout.as_view(), name='logout'),
     
     # Provider Path   
-    url(r'^addKitchen/$', AddKitchen.as_view(), name='addKitchen'), # Subject to change 
+    url(r'^addKitchen/$', csrf_exempt(AddKitchen.as_view()), name='addKitchen'), # Subject to change 
     url(r'^myKitchens/$', ProviderKitchenView.as_view(), name='providerKitchenView'), # Subject to change 
     url(r'^menu/kitchen/(?P<kitchen_id>.*)/$', AddDish.as_view(), name='addDish'), # Subject to change 
     
     
     # Buyer Path
     url(r'^view/menu/kitchen(?P<kitchen_id>.*)/$', MenuView.as_view(), name='viewMenu'), # Subject to change 
-    url(r'^addToCart/$', AddToCart.as_view(), name='addToCart'), # Subject to change 
+    url(r'^addToCart/$', csrf_exempt(AddToCart.as_view()), name='addToCart'), # Subject to change 
     url(r'^shoppingCart/$', csrf_exempt(CartView.as_view()), name='shoppingCart'), # Subject to change 
-    url(r'^purchase/$', Purchase.as_view(), name='purchase'), # Subject to change 
+    url(r'^purchase/$',csrf_exempt(Purchase.as_view()), name='purchase'), # Subject to change 
     url(r'^orders/$', OrderView.as_view(), name='orders'), # Subject to change 
     url(r'^purchasedOrder/(?P<order_id>.*)$', PurchasedOrder.as_view(), name='purchasedOrder'), # Subject to change 
-    url(r'^removeDish/(?P<cart_id>.*)$', RemoveDish.as_view(), name='removeDish'), # Subject to change 
+    url(r'^removeDish/(?P<cart_id>.*)$', csrf_exempt(RemoveDish.as_view()), name='removeDish'), # Subject to change 
 ]
 
 
