@@ -29,9 +29,6 @@ def get_response(request, table):
 class AllKitchenView(APIView):
    
    def get(self, request):
-      # kitchens = Kitchen.objects.all()
-      # kitchen_session = KitchenSession(request)
-      # user = kitchen_session.is_login()
       # return render(request, 'buyer_kitchen.html', {'kitchens':kitchens, 'login': user[0], 'username':user[1], 'provider': kitchen_session.isProvider()  })
       # return redirect('http://18.222.73.77:8000/')
       kitchens = Kitchen.objects.all()
@@ -44,7 +41,6 @@ class CartView(APIView):
    @login_required
    def get(self, request):
       print("CART IS => ",request.session.get('user'))
-      # user = kitchen_session.is_login()
       # return render(request, 'cart.html', {'in_cart': True ,'name': 'Shopping Cart','cart':cart, 'login':user[0], 'username': user[1], 'provider': kitchen_session.isProvider() , 'total': kitchen_session.getShopingCartTotal(), 'cart_length': len(cart) })
       kitchen_session = KitchenSession(request)
       cart = Cart.objects.filter(user=KitchenSession(request).getUserObject(), purchased=False )
@@ -55,15 +51,16 @@ class CartView(APIView):
 
       return response
 
-class MenuView(View):
+class MenuView(APIView):
 
    def get(self, request, kitchen_id):
       kitchen_session = KitchenSession(request)
       kitchen = kitchen_session.getKitchenObject(kitchen_id)
       dishes = Menu.objects.filter(kitchen=kitchen)
-      
-      user = kitchen_session.is_login()
-      return render(request, 'buyer_menu.html', {'dishes': dishes, 'kitchen_name':kitchen.kitchen_name, 'login': user[0], 'username':user[1],'provider': kitchen_session.isProvider() })
+      data = {'dishes': [], 'kitchen_name': kitchen.kitchen_name }
+      for dish in dishes:
+         data['dishes'].append({ 'dish_name' : dish.dish_name, 'price': dish.price, 'is_vegan':dish.is_vegan })
+      return get_response(request, data)
       
 
 class AddToCart(APIView):
@@ -94,18 +91,19 @@ class OrderView(APIView):
       data = {'orders': [], 'name': "Orders"}
       for order in orders:
          data['orders'].append({'id': order.id, 'price':order.price})
-      response = get_response(request, data)
 
-      return response
+      return get_response(request, data)
 
-class PurchasedOrder(View):
+class PurchasedOrder(APIView):
    @login_required
    def get(self, request, order_id):
       kitchen_session = KitchenSession(request)
       order = Order.objects.get(id=order_id)
       cart = order.purchased_list.all()
-      user = kitchen_session.is_login()
-      return render(request, 'cart.html', {'in_cart':False, 'price' : order.price, 'order_id' : order_id, 'name':'Order #' , 'login': user[0], 'username':user[1],'provider': kitchen_session.isProvider(), 'purchased': True,'cart':cart })
+      data = {'cart':[], 'price': order.price, 'order_id' : order_id, 'name':'Order #' }
+      for item in cart:
+         data['cart'].append({'dish_name':item.dish.dish_name, 'price': item.dish.price, 'kitchen_name':item.dish.kitchen.kitchen_name })
+      return get_response(request, data)
 
 
 class RemoveDish(APIView):
@@ -117,33 +115,3 @@ class RemoveDish(APIView):
       return JsonResponse({'status':'ok'})
 
 
-# def get_response(request, table):
-#    kitchen_session = KitchenSession(request)
-#    user = kitchen_session.is_login()
-#    table['login'] = user[0]
-#    table['username'] = user[1]
-#    table['provider'] = kitchen_session.isProvider()
-#    response = JsonResponse(table) 
-#    return response
-
-'''
-import json
-from django.http import JsonResponse
-from django.urls import reverse_lazy
-from django.views.generic import FormView
-from djng.forms import NgModelFormMixin, NgForm
-import djng.forms 
-
-
-class ContactForm(NgModelFormMixin, NgForm):
-   form_name = 'contact_form'
-   scope_prefix = 'contact_data'
-   username  = djng.forms.fields.CharField(max_length=100, required = True)
-   password = djng.forms.fields.CharField(max_length=32,  required=True)
-
-class ContactFormView(FormView):
-    template_name = 'forms.html'
-    form_class = ContactForm
-    success_url = reverse_lazy('kitchen:signup')
-
-'''
