@@ -84,7 +84,6 @@ class Purchase(APIView):
    @login_required
    def post(self, request):
       KitchenSession(request).processTransaction()
-      response["Access-Control-Allow-Origin"] = "*"
       return JsonResponse({'status': "ok"})
 
 
