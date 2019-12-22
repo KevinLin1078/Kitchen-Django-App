@@ -33,7 +33,9 @@ class AllKitchenView(APIView):
       # return redirect('http://18.222.73.77:8000/')
       kitchens = Kitchen.objects.all()
       serialize = KitchenSerializer(kitchens,  many=True)
-      data = {'status': "ok" ,'kitchens': serialize.data }
+      data = {'kitchens': [] }
+      for kitchen in kitchens:
+         data['kitchens'].append({ 'id': kitchen.id, 'kitchen_name': kitchen.kitchen_name, 'image_url' : kitchen.image_url, 'username': kitchen.provider.username  })
       response = get_response(request, data)
       return response
    
@@ -85,6 +87,7 @@ class Purchase(APIView):
 
 
 class OrderView(APIView):
+   @login_required
    def get(self, request):
       kitchen_session = KitchenSession(request)
       orders = Order.objects.filter(user=kitchen_session.getUserObject())
