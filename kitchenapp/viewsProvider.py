@@ -77,10 +77,10 @@ class AddDish(APIView):
       kitchen_session = KitchenSession(request)
       kitchen = kitchen_session.getKitchenObject(kitchen_id)
       dishes = Menu.objects.filter(kitchen=kitchen)
-      data = {'name':'Add Dish' , 'dishes':dishes, 'kitchen_name': kitchen.kitchen_name}
+      data = {'name':'Add Dish' , 'dishes':[], 'kitchen_name': kitchen.kitchen_name}
       
       for dish in dishes:
-         data['dishes'].append({'dish_name':dish.dish_name, 'price': dish.price, 'is_vegan':dish.is_vegan})
+         data['dishes'].append({'dish_name' : dish.dish_name, 'price': dish.price, 'is_vegan':dish.is_vegan})
       return get_response(request, data)
       
 
