@@ -70,17 +70,20 @@ class ProviderKitchenView(APIView):
 
 #My kitchen
 class AddDish(APIView):
-   # @login_required
-   # @seller_required
-   # def get(self, request, kitchen_id):
-   #    kitchen_session = KitchenSession(request)
-   #    kitchen = kitchen_session.getKitchenObject(kitchen_id)
-   #    dishes = Menu.objects.filter(kitchen=kitchen)
+   
+   @login_required
+   @seller_required
+   def get(self, request, kitchen_id):
+      kitchen_session = KitchenSession(request)
+      kitchen = kitchen_session.getKitchenObject(kitchen_id)
+      dishes = Menu.objects.filter(kitchen=kitchen)
+      data = {'name':'Add Dish' , 'dishes':dishes, 'kitchen_name': kitchen.kitchen_name}
+      
+      for dish in dishes:
+         data['dishes'].append({'dish_name':dish.dish_name, 'price': dish.price, 'is_vegan':dish.is_vegan})
+      return get_response(request, data)
+      
 
-   #    user = kitchen_session.is_login()
-
-   #    data = {'name':'Add Dish' , 'form': AddDishForm(), 'dishes':dishes, 'provider': kitchen_session.isProvider(), 'kitchen_name': kitchen.kitchen_name, 'login': user[0], 'username':user[1]}
-   #    return render(request, 'menu.html', data)
    
    @login_required
    @seller_required
