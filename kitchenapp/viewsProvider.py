@@ -82,14 +82,17 @@ class AddDish(APIView):
       for dish in dishes:
          data['dishes'].append({'dish_name' : dish.dish_name, 'price': dish.price, 'is_vegan':dish.is_vegan})
       return get_response(request, data)
-      
 
    @login_required
    @seller_required
    def post(self, request, kitchen_id):
       form = request.data
+
+      print(form)
       dish_name, price = form['dish_name'], form['price']
-      is_vegan = True if form['is_vegan'][0] =='true' else False
+
+      is_vegan = True if form['is_vegan'] =='true' else False 
+
       Menu.objects.create(dish_name=dish_name,price=price, is_vegan=is_vegan, kitchen=KitchenSession(request).getKitchenObject(kitchen_id) )
       return JsonResponse({'status': 'ok'})
 
