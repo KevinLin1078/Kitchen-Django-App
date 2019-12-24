@@ -173,9 +173,12 @@ STATICFILES_DIRS = [
 
 ##########################################
 
-AWS_ACCESS_KEY_ID = 'AKIAJOXX6WYXL6SGEPDA'
-AWS_SECRET_ACCESS_KEY = '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'
-AWS_STORAGE_BUCKET_NAME = 'kitchenfeast'
+
+from .aws import key
+
+AWS_ACCESS_KEY_ID = key[0]
+AWS_SECRET_ACCESS_KEY = key[1]
+AWS_STORAGE_BUCKET_NAME = 'tangmingli2'
 AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
 AWS_S3_OBJECT_PARAMETERS = {
     'CacheControl': 'max-age=86400',

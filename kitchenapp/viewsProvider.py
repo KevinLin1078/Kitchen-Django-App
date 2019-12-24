@@ -25,34 +25,32 @@ def get_response(request, table):
    response = JsonResponse(table) 
    return response
 
-class AddKitchen(View):
+class AddKitchen(APIView):
    
-   @login_required
-   @seller_required
-   def get(self, request):
-      kitchen_session = KitchenSession(request)
-      form = AddKitchenForm()
-      user = kitchen_session.is_login()
+   # @login_required
+   # @seller_required
+   # def get(self, request):
+   #    kitchen_session = KitchenSession(request)
+   #    form = AddKitchenForm()
+   #    user = kitchen_session.is_login()
 
-      return render(request, 'forms.html', {'name':'Add Kitchen', 'form': form, 'provider': True, 'login': user[0], 'username':user[1]})
-
+   #    return render(request, 'forms.html', {'name':'Add Kitchen', 'form': form, 'provider': True, 'login': user[0], 'username':user[1]})
 
    @login_required
    @seller_required
    def post(self, request):
-      form = AddKitchenForm(request.POST, request.FILES)
-      if form.is_valid():
-         kitchen_name = form.cleaned_data['kitchen_name']
-         file = form.cleaned_data['image']
-         image_url = 'https://kitchenfeast.s3.us-east-2.amazonaws.com/' + addToBucket(kitchen_name, file)
+      form = request.data
+      pp = request.POST
+      kitchen_name = form['kitchen_name']
+      file = form['image']
+      print('==============================', pp)
+      print('==============================', file)
+      image_url = 'https://tangmingli2.s3.us-east-1.amazonaws.com/' + addToBucket(kitchen_name, file)
 
-         kitchen_session = KitchenSession(request)
-         Kitchen.objects.create(kitchen_name=kitchen_name, image_url=image_url, provider=kitchen_session.getUserObject())
+      kitchen_session = KitchenSession(request)
+      Kitchen.objects.create(kitchen_name=kitchen_name, image_url=image_url, provider=kitchen_session.getUserObject())
 
-         return HttpResponseRedirect(reverse('kitchen:providerKitchenView')) 
-
-      return HttpResponseRedirect(reverse('kitchen:addKitchen')) 
-
+      return JsonResponse({'status': 'ok', 'url': image_url})
 
 
 #/myKitchens
