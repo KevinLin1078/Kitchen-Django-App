@@ -13,6 +13,7 @@ from .session import KitchenSession
 from .authenticate import login_required, authenticate_user, seller_required, addToBucket
 import boto3
 from django.http import JsonResponse
+from .serializer import SignupSerializer
 
 def get_updated_JsonResponse(request, table):
    kitchen_session = KitchenSession(request)
@@ -27,18 +28,17 @@ def get_updated_JsonResponse(request, table):
    return response
 
 
-class Signup(View):
-   def get(self, request):
-      form = SignUpForm()
-      return render(request, 'forms.html', {'form':form, 'name':'Sign Up'})
+class Signup(APIView):
+   # def get(self, request):
+   #    form = SignUpForm()
+   #    return render(request, 'forms.html', {'form':form, 'name':'Sign Up'})
    
    def post(self, request):
-      form = SignUpForm(request.POST)
-      if form.is_valid():
-         form.save()
-         return HttpResponseRedirect(reverse('kitchen:login'))
-         
-      return HttpResponseRedirect(reverse('kitchen:signup'))
+      serialize = SignupSerializer(data=request.data)
+      if serialize.is_valid():
+         serialize.save()
+         return Response({'status': 'ok'})
+      return Response({'status': 'error user not added'})
 
 class Login(APIView):
 

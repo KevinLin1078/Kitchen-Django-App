@@ -61,7 +61,7 @@ class MenuView(APIView):
       dishes = Menu.objects.filter(kitchen=kitchen)
       data = {'dishes': [], 'kitchen_name': kitchen.kitchen_name }
       for dish in dishes:
-         data['dishes'].append({ 'dish_name' : dish.dish_name, 'price': dish.price, 'is_vegan':dish.is_vegan })
+         data['dishes'].append({'id': dish.id, 'dish_name' : dish.dish_name, 'price': dish.price, 'is_vegan':dish.is_vegan })
       return get_response(request, data)
       
 
