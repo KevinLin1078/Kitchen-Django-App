@@ -113,8 +113,11 @@ class RemoveDish(APIView):
    @login_required
    def post(self, request, cart_id):
       print('REMOVING DISH..... => ', cart_id)
-      user = KitchenSession(request).getUserObject()
+      kitchen_session = KitchenSession(request)
+      user = kitchen_session.getUserObject()
       Cart.objects.get(user=user, id=cart_id).delete()
-      return JsonResponse({'status':'ok'})
+
+     
+      return JsonResponse({'status':'ok',  'total': kitchen_session.getShopingCartTotal()})
 
 
