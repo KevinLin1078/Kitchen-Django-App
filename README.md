@@ -15,4 +15,5 @@ bash install.sh
 
 ## Usage
 
-The install.sh file will automatically install all system requirements and deploy this app to Apache2 web server. 
+install.sh file will automatically install all system requirements and deploy this app to Apache2 web server. 
+
