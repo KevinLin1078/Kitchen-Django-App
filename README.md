@@ -1,7 +1,8 @@
 # Kitchen EATS 
 Kitchen Eats is a AWS cloud-enabled, AngularJS powered, and DJANGO Rest integrated application.
-### Django backend : https://github.com/KevinLin1078/Kitchen-Django-App
-### Angular frontend: https://github.com/KevinLin1078/Kitchen-Angular-RESTful
+#### Django backend : https://github.com/KevinLin1078/Kitchen-Django-App
+#### Angular frontend: https://github.com/KevinLin1078/Kitchen-Angular-RESTful
+
 
 ## Installation
 
