@@ -12,4 +12,4 @@ Kitchen Eats is a AWS cloud-enabled, AngularJS powered, and DJANGO Rest integrat
     -$ cd Kitchen-Django-App
     -$ bash install.sh 
     
-####This will AUTOMATICALLY deploy the application to APACHE on the web.
+#### This will AUTOMATICALLY install and deploy the application to APACHE web server.
