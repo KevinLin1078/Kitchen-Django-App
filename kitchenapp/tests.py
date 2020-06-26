@@ -7,7 +7,7 @@ class KitchenTestCase(TestCase):
     def setUp(self):
         pass
 
-    def test_animals_can_speak(self):
+    def test_kitchen_name(self):
         kitchen = Kitchen.objects.get(id=2)
         self.assertEqual(kitchen.kitchen_name, 'Pizza')
         
