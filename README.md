@@ -1,6 +1,6 @@
 # Kitchen-Django-App
 
-This is an AWS and RESTful based application. 
+This is an ##AWS## and ##RESTful## based application. 
 
 This Kitchen Shopping App allows owners to register their restaurant online and allows buyer to shop from restaurants.  
 
