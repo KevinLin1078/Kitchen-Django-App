@@ -8,7 +8,7 @@ This Kitchen Shopping App allows owners to register their restaurant online and 
 
 ### This application has its separate front-end and back-end. 
 
-### RESTful backend : https://github.com/KevinLin1078/Kitchen-Django-App
+### Django backend : https://github.com/KevinLin1078/Kitchen-Django-App
 ### Angular frontend: https://github.com/KevinLin1078/Kitchen-Angular-RESTful
 
 
