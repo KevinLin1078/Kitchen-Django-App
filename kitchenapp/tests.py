@@ -2,14 +2,7 @@ from django.test import TestCase
 from .models import Kitchen, User
 
 
-user1 = None 
-
-class DatabaseTest(TestCase):
-    def setUp(self):
-        pass
-    def test_database_connection(self):
-        pass
-    
+user1 = None    
 
 class UserTest(TestCase):
     
