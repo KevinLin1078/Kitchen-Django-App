@@ -16,7 +16,8 @@ class UserTest(TestCase):
         User.objects.create(username=username, first_name=first_name, last_name=last_name,password=password, question_1=question_1, answer_1=answer_1, question_2=question_2, answer_2=answer_2, is_provider=is_provider)
         
     def test_user_creation(self):
-        pass
+        user1 = User.object.get(username='username1')
+        self.assertEqual(user1.username, 'username1');        
 
 
 class KitchenTest(TestCase):
