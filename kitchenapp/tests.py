@@ -3,7 +3,7 @@ from .models import Kitchen
 
 
 
-class KitchenTestCase(TestCase):
+class KitchenTest(TestCase):
     def setUp(self):
         pass
 
