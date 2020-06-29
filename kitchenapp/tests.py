@@ -15,7 +15,7 @@ class UserTest(TestCase):
         username, first_name, last_name,password, question_1, answer_1, question_2, answer_2, is_provider = 'username1', 'ivy', 'blue', '1234', 'q1', 'a1','q2', 'a2', True
         User.objects.create(username=username, first_name=first_name, last_name=last_name,password=password, question_1=question_1, answer_1=answer_1, question_2=question_2, answer_2=answer_2, is_provider=is_provider)
         
-    def test_user_creation(self):
+    def test_add_user(self):
         user1 = User.object.get(username='username1')
         self.assertEqual(user1.username, 'username1');        
 
